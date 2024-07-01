@@ -1,0 +1,49 @@
+# Role and RoleBinding for user1
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: ns-user1
+  name: user1-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "deployments"]
+  verbs: ["get", "list", "watch", "create", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: ns-user1
+  name: user1-role-binding
+subjects:
+- kind: User
+  name: user1
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: user1-role
+  apiGroup: rbac.authorization.k8s.io
+---
+# Role and RoleBinding for user2
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: ns-user2
+  name: user2-role
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services", "deployments"]
+  verbs: ["get", "list", "watch", "create", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: ns-user2
+  name: user2-role-binding
+subjects:
+- kind: User
+  name: user2
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: user2-role
+  apiGroup: rbac.authorization.k8s.io

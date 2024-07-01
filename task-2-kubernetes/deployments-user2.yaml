@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: ns-user2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx1
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+      - name: nginx2
+        image: nginx:latest
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: nginx2-config-volume
+          mountPath: /etc/nginx/conf.d/default.conf
+          subPath: nginx2.conf
+      volumes:
+      - name: nginx2-config-volume
+        configMap:
+          name: nginx2-config
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: alpine-pod
+  namespace: ns-user2
+spec:
+  containers:
+  - name: alpine
+    image: alpine:latest
+    command: ["sleep", "3600"]
